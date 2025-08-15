@@ -17,7 +17,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public List<ProductResponse> getSellingProducts(List<ProductSellingType> productSellingTypes) {
-        productSellingTypes = productSellingTypes.isEmpty() ? List.of((ProductSellingType.values())) : productSellingTypes;
+        productSellingTypes = productSellingTypes == null ? List.of((ProductSellingType.values())) : productSellingTypes;
         List<Product> sellingProducts = productRepository.findByProductSellingTypeIn(productSellingTypes);
 
         return sellingProducts.stream()
