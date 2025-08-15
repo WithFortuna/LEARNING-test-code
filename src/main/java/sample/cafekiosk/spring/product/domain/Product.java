@@ -7,7 +7,7 @@ import sample.cafekiosk.spring.global.domain.BaseEntity;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PRIVATE)
 @Getter
@@ -29,8 +29,9 @@ public class Product extends BaseEntity {
 
     private int price;
 
-    public static Product create(ProductType productType, ProductSellingType productSellingType, String name, int price) {
+    public static Product create(ProductType productType, ProductSellingType productSellingType, String name, int price, String productNumber) {
         return Product.builder()
+                .productNumber(productNumber)
                 .productType(productType)
                 .productSellingType(productSellingType)
                 .name(name)

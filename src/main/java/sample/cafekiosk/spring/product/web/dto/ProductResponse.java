@@ -6,6 +6,7 @@ import sample.cafekiosk.spring.product.domain.ProductType;
 
 public record ProductResponse(
         Long id,
+        String productNumber,
         ProductType productType,
         ProductSellingType productSellingType,
         String name,
@@ -14,6 +15,7 @@ public record ProductResponse(
     public static ProductResponse from(Product product) {
         return new ProductResponse(
                 product.getId(),
+                product.getProductNumber(),
                 product.getProductType(),
                 product.getProductSellingType(),
                 product.getName(),
