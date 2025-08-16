@@ -9,11 +9,18 @@ import sample.cafekiosk.spring.order.repository.OrderRepository;
 import sample.cafekiosk.spring.order.web.dto.request.OrderCreateRequest;
 import sample.cafekiosk.spring.order.web.dto.response.OrderResponse;
 import sample.cafekiosk.spring.product.domain.Product;
+import sample.cafekiosk.spring.product.domain.ProductType;
 import sample.cafekiosk.spring.product.repository.ProductRepository;
 import sample.cafekiosk.spring.product.web.dto.ProductResponse;
+import sample.cafekiosk.spring.stock.domain.Stock;
+import sample.cafekiosk.spring.stock.repository.StockRepository;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -22,23 +29,49 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final StockRepository stockRepository;
 
     @Transactional
     public OrderResponse createOrder(OrderCreateRequest request) {
         Order order = Order.create(LocalDateTime.now());
-        List<Product> findProducts = productRepository.findAllByProductNumberIn(request.productNumbers());
 
-        findProducts.forEach(p-> {
-            OrderProduct orderProduct = OrderProduct.create(p);
-            order.addOrderProduct(orderProduct);
+        List<Product> productWithDuplicatedNumber = getProductsConsideringDuplicatedProductNumber(request);
+
+        decreaseStocksByProductType(productWithDuplicatedNumber);
+
+        productWithDuplicatedNumber.forEach(product -> {
+            order.addOrderProduct(OrderProduct.create(product));
         });
 
         orderRepository.save(order);
-
-        return OrderResponse.from(order, convertToProductResponses(findProducts));
+        return OrderResponse.from(order, convertToProductResponses(productWithDuplicatedNumber));
     }
 
-    private static List<ProductResponse> convertToProductResponses(List<Product> findProducts) {
+    private void decreaseStocksByProductType(List<Product> productWithDuplicatedNumber) {
+        List<Product> needToDecreaseStock = productWithDuplicatedNumber.stream()
+                .filter(p -> ProductType.hasStockProperty(p.getProductType()))
+                .toList();
+        needToDecreaseStock.forEach(p -> {
+            Stock stock = stockRepository.findByProduct(p)
+                    .stream()
+                    .findFirst().orElseThrow();
+            stock.decreaseQuantity(1);
+        });
+    }
+
+    private List<Product> getProductsConsideringDuplicatedProductNumber(OrderCreateRequest request) {
+        List<Product> findProducts = productRepository.findAllByProductNumberIn(request.productNumbers());
+
+        Map<String, Product> productMap = findProducts.stream()
+                .collect(Collectors.toMap(Product::getProductNumber, p -> p));
+
+        List<Product> productWithDuplicatedNumber = request.productNumbers().stream()
+                .map(productNumber -> productMap.get(productNumber))
+                .toList();
+        return productWithDuplicatedNumber;
+    }
+
+    private List<ProductResponse> convertToProductResponses(List<Product> findProducts) {
         return findProducts.stream()
                 .map(ProductResponse::from)
                 .toList();

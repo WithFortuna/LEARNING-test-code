@@ -29,7 +29,10 @@ public class Product extends BaseEntity {
 
     private int price;
 
-    public static Product create(ProductType productType, ProductSellingType productSellingType, String name, int price, String productNumber) {
+    public static Product create(ProductType productType,
+                                 ProductSellingType productSellingType,
+                                 String name, int price,
+                                 String productNumber) {
         return Product.builder()
                 .productNumber(productNumber)
                 .productType(productType)
