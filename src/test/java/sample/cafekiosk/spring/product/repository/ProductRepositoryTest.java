@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sample.cafekiosk.spring.product.domain.Product;
 import sample.cafekiosk.spring.product.domain.ProductSellingType;
 import sample.cafekiosk.spring.product.domain.ProductType;
+import sample.cafekiosk.spring.product.utility.ProductUtils;
 
 import java.util.List;
 
@@ -68,6 +69,22 @@ class ProductRepositoryTest {
                 )
         ;
 
+    }
+
+    @DisplayName("가장 높은 상품번호를 조회한다.")
+    @Test
+    public void should_return_003_when_findLatestProductNumber_called() {
+        // given
+        Product item1 = ProductUtils.createProduct(ProductType.BOTTLE, 1000, "001");
+        Product item2 = ProductUtils.createProduct(ProductType.BOTTLE, 1000, "002");
+        Product item3 = ProductUtils.createProduct(ProductType.BOTTLE, 1000, "003");
+        productRepository.saveAll(List.of(item1, item2, item3));
+
+        // when
+        String latestProductNumber = productRepository.findLatestProductNumber();
+
+        // then
+        Assertions.assertThat(latestProductNumber).isEqualTo("003");
     }
 
 }
