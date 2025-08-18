@@ -20,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static sample.cafekiosk.spring.product.utility.ProductUtils.*;
 
 
-//@DataJpaTest
+@DataJpaTest
 @Transactional
-@SpringBootTest
+//@SpringBootTest
 class ProductRepositoryTest {
     @Autowired
     private ProductRepository productRepository;

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import sample.cafekiosk.spring.product.application.dto.ProductCreateServiceRequest;
 import sample.cafekiosk.spring.product.domain.Product;
 import sample.cafekiosk.spring.product.domain.ProductSellingType;
 import sample.cafekiosk.spring.product.domain.ProductType;
@@ -35,7 +36,7 @@ class ProductServiceTest {
     @Test
     void should_hasSize_1_when_createProduct_called() {
         //given
-        ProductCreateRequest req = new ProductCreateRequest(ProductType.BOTTLE, ProductSellingType.SELLING, "item1", 1000);
+        ProductCreateServiceRequest req = new ProductCreateServiceRequest(ProductType.BOTTLE, ProductSellingType.SELLING, "item1", 1000);
 
         //when
         ProductResponse saved = productService.createProduct(req);
@@ -51,7 +52,7 @@ class ProductServiceTest {
     @Test
     public void should_return_001_when_create_first_product() {
         // given
-        ProductCreateRequest req = new ProductCreateRequest(ProductType.BOTTLE, ProductSellingType.SELLING, "item1", 1000);
+        ProductCreateServiceRequest req = new ProductCreateServiceRequest(ProductType.BOTTLE, ProductSellingType.SELLING, "item1", 1000);
 
         // when
         ProductResponse saved = productService.createProduct(req);
@@ -70,7 +71,7 @@ class ProductServiceTest {
         Product item2 = ProductUtils.createProduct(ProductType.BOTTLE, 1000, "002");
         Product item3 = ProductUtils.createProduct(ProductType.BOTTLE, 1000, "003");
         productRepository.saveAll(List.of(item1, item2, item3));
-        ProductCreateRequest req = new ProductCreateRequest(ProductType.BOTTLE, ProductSellingType.SELLING, "item4", 1000);
+        ProductCreateServiceRequest req = new ProductCreateServiceRequest(ProductType.BOTTLE, ProductSellingType.SELLING, "item4", 1000);
 
         // when
         ProductResponse saved = productService.createProduct(req);

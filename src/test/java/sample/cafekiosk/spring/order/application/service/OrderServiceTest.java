@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import sample.cafekiosk.spring.order.application.dto.request.OrderCreateServiceRequest;
 import sample.cafekiosk.spring.order.domain.Order;
 import sample.cafekiosk.spring.order.domain.OrderProduct;
 import sample.cafekiosk.spring.order.repository.OrderRepository;
@@ -59,7 +60,7 @@ class OrderServiceTest {
         Stock stock2 = Stock.create(item2, 10);
         stockRepository.saveAll(List.of(stock1, stock2));
 
-        OrderCreateRequest request = new OrderCreateRequest(List.of(item1.getProductNumber(), item2.getProductNumber()));
+        OrderCreateServiceRequest request = new OrderCreateServiceRequest(List.of(item1.getProductNumber(), item2.getProductNumber()));
 
         // when
         orderService.createOrder(request);
@@ -100,7 +101,7 @@ class OrderServiceTest {
         Stock stock2 = Stock.create(item2, 10);
         stockRepository.saveAll(List.of(stock1, stock2));
 
-        OrderCreateRequest request = new OrderCreateRequest(List.of(item1.getProductNumber(), item1.getProductNumber()));
+        OrderCreateServiceRequest request = new OrderCreateServiceRequest(List.of(item1.getProductNumber(), item1.getProductNumber()));
 
         // when
         orderService.createOrder(request);
@@ -143,7 +144,7 @@ class OrderServiceTest {
         Stock stock2 = Stock.create(item2, 10);
         stockRepository.saveAll(List.of(stock1, stock2));
 
-        OrderCreateRequest request = new OrderCreateRequest(List.of(item1.getProductNumber(), item1.getProductNumber()));
+        OrderCreateServiceRequest request = new OrderCreateServiceRequest(List.of(item1.getProductNumber(), item1.getProductNumber()));
 
         // when
         Long id = orderService.createOrder(request).id();
@@ -167,7 +168,7 @@ class OrderServiceTest {
         Stock stock1 = Stock.create(item1, 1);
         stockRepository.saveAll(List.of(stock1));
 
-        OrderCreateRequest request = new OrderCreateRequest(List.of(item1.getProductNumber()));
+        OrderCreateServiceRequest request = new OrderCreateServiceRequest(List.of(item1.getProductNumber()));
 
         // when
         Long id = orderService.createOrder(request).id();
@@ -191,7 +192,7 @@ class OrderServiceTest {
         Stock stock1 = Stock.create(item1, 0);
         stockRepository.saveAll(List.of(stock1));
 
-        OrderCreateRequest request = new OrderCreateRequest(List.of(item1.getProductNumber()));
+        OrderCreateServiceRequest request = new OrderCreateServiceRequest(List.of(item1.getProductNumber()));
 
         // when & then
         assertThatThrownBy(() -> orderService.createOrder(request))
