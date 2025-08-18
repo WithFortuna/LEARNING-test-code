@@ -7,7 +7,6 @@ import sample.cafekiosk.spring.order.application.dto.request.OrderCreateServiceR
 import sample.cafekiosk.spring.order.domain.Order;
 import sample.cafekiosk.spring.order.domain.OrderProduct;
 import sample.cafekiosk.spring.order.repository.OrderRepository;
-import sample.cafekiosk.spring.order.web.dto.request.OrderCreateRequest;
 import sample.cafekiosk.spring.order.web.dto.response.OrderResponse;
 import sample.cafekiosk.spring.product.domain.Product;
 import sample.cafekiosk.spring.product.domain.ProductType;
@@ -17,11 +16,9 @@ import sample.cafekiosk.spring.stock.domain.Stock;
 import sample.cafekiosk.spring.stock.repository.StockRepository;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -33,8 +30,8 @@ public class OrderService {
     private final StockRepository stockRepository;
 
     @Transactional
-    public OrderResponse createOrder(OrderCreateServiceRequest request) {
-        Order order = Order.create(LocalDateTime.now());
+    public OrderResponse createOrder(OrderCreateServiceRequest request, LocalDateTime registeredAt) {
+        Order order = Order.create(registeredAt);
 
         List<Product> productWithDuplicatedNumber = getProductsConsideringDuplicatedProductNumber(request);
 

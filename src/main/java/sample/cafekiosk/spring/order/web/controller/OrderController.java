@@ -7,6 +7,7 @@ import sample.cafekiosk.spring.order.application.service.OrderService;
 import sample.cafekiosk.spring.order.web.dto.request.OrderCreateRequest;
 import sample.cafekiosk.spring.order.web.dto.response.OrderResponse;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequestMapping("/api/v1")
@@ -17,7 +18,7 @@ public class OrderController {
 
     @PostMapping("/orders")
     public OrderResponse createOrder(@RequestBody @Valid OrderCreateRequest request) {
-        return orderService.createOrder(request.toServiceRequest());
+        return orderService.createOrder(request.toServiceRequest(), LocalDateTime.now());
     }
 
     @GetMapping("/orders")
