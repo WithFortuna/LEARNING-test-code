@@ -3,6 +3,7 @@ package sample.cafekiosk.spring.order.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sample.cafekiosk.spring.order.application.dto.request.OrderCreateServiceRequest;
 import sample.cafekiosk.spring.order.domain.Order;
 import sample.cafekiosk.spring.order.domain.OrderProduct;
 import sample.cafekiosk.spring.order.repository.OrderRepository;
@@ -32,7 +33,7 @@ public class OrderService {
     private final StockRepository stockRepository;
 
     @Transactional
-    public OrderResponse createOrder(OrderCreateRequest request) {
+    public OrderResponse createOrder(OrderCreateServiceRequest request) {
         Order order = Order.create(LocalDateTime.now());
 
         List<Product> productWithDuplicatedNumber = getProductsConsideringDuplicatedProductNumber(request);
@@ -59,7 +60,7 @@ public class OrderService {
         });
     }
 
-    private List<Product> getProductsConsideringDuplicatedProductNumber(OrderCreateRequest request) {
+    private List<Product> getProductsConsideringDuplicatedProductNumber(OrderCreateServiceRequest request) {
         List<Product> findProducts = productRepository.findAllByProductNumberIn(request.productNumbers());
 
         Map<String, Product> productMap = findProducts.stream()
