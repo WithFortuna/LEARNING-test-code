@@ -1,5 +1,6 @@
 package sample.cafekiosk.spring.product.web.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import sample.cafekiosk.spring.product.application.service.ProductService;
@@ -22,7 +23,7 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public ProductResponse createProduct(@RequestBody ProductCreateRequest request) {
-        return productService.createProduct(request);
+    public ProductResponse createProduct(@RequestBody @Valid ProductCreateRequest request) {
+        return productService.createProduct(request.toServiceRequest());
     }
 }
