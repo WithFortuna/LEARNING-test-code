@@ -1,7 +1,5 @@
 package sample.cafekiosk.spring.order.application.service;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +9,13 @@ import sample.cafekiosk.spring.order.application.dto.request.OrderCreateServiceR
 import sample.cafekiosk.spring.order.domain.Order;
 import sample.cafekiosk.spring.order.domain.OrderProduct;
 import sample.cafekiosk.spring.order.repository.OrderRepository;
-import sample.cafekiosk.spring.order.web.dto.request.OrderCreateRequest;
 import sample.cafekiosk.spring.product.domain.Product;
 import sample.cafekiosk.spring.product.repository.ProductRepository;
 import sample.cafekiosk.spring.stock.domain.Stock;
 import sample.cafekiosk.spring.stock.repository.StockRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static sample.cafekiosk.spring.product.domain.ProductType.BOTTLE;
@@ -63,7 +60,7 @@ class OrderServiceTest {
         OrderCreateServiceRequest request = new OrderCreateServiceRequest(List.of(item1.getProductNumber(), item2.getProductNumber()));
 
         // when
-        orderService.createOrder(request);
+        orderService.createOrder(request, LocalDateTime.now());
         
         // then
         Order createdOrder = orderRepository.findAll()
@@ -104,7 +101,7 @@ class OrderServiceTest {
         OrderCreateServiceRequest request = new OrderCreateServiceRequest(List.of(item1.getProductNumber(), item1.getProductNumber()));
 
         // when
-        orderService.createOrder(request);
+        orderService.createOrder(request, LocalDateTime.now());
 
         // then
         Order createdOrder = orderRepository.findAll()
@@ -147,7 +144,7 @@ class OrderServiceTest {
         OrderCreateServiceRequest request = new OrderCreateServiceRequest(List.of(item1.getProductNumber(), item1.getProductNumber()));
 
         // when
-        Long id = orderService.createOrder(request).id();
+        Long id = orderService.createOrder(request, LocalDateTime.now()).id();
 
         // then
         List<Order> orders = orderRepository.findAll();
@@ -171,7 +168,7 @@ class OrderServiceTest {
         OrderCreateServiceRequest request = new OrderCreateServiceRequest(List.of(item1.getProductNumber()));
 
         // when
-        Long id = orderService.createOrder(request).id();
+        Long id = orderService.createOrder(request, LocalDateTime.now()).id();
 
         // then
         List<Order> orders = orderRepository.findAll();
@@ -195,7 +192,7 @@ class OrderServiceTest {
         OrderCreateServiceRequest request = new OrderCreateServiceRequest(List.of(item1.getProductNumber()));
 
         // when & then
-        assertThatThrownBy(() -> orderService.createOrder(request))
+        assertThatThrownBy(() -> orderService.createOrder(request, LocalDateTime.now()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("재고가 부족합니다");
     }
