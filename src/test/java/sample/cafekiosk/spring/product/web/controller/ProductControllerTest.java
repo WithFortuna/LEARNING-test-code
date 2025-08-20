@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -110,7 +111,10 @@ class ProductControllerTest {
     public void should_return_2_when_getSellingProducts_called() throws Exception {
         // given
         List<ProductResponse> response = List.of();
-        Mockito.when(productService.getSellingProducts(List.of(SELLING))).thenReturn(response);
+//        Mockito.when(productService.getSellingProducts(List.of(SELLING)))
+//                .thenReturn(response);
+        BDDMockito.given(productService.getSellingProducts(List.of(SELLING)))
+                        .willReturn(response);
 
         // when
         mockMvc.perform(
