@@ -6,6 +6,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import sample.cafekiosk.spring.IntegrationTestSupport;
 import sample.cafekiosk.spring.mail.application.MailSender;
 import sample.cafekiosk.spring.order.application.dto.request.OrderCreateServiceRequest;
 import sample.cafekiosk.spring.product.domain.Product;
@@ -20,8 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static sample.cafekiosk.spring.product.domain.ProductType.BOTTLE;
 import static sample.cafekiosk.spring.product.utility.ProductUtils.createProduct;
 
-@SpringBootTest
-class OrderStatisticsServiceTest {
+class OrderStatisticsServiceTest extends IntegrationTestSupport {
     @Autowired
     private OrderStatisticsService orderStatisticsService;
     @Autowired

@@ -1,10 +1,13 @@
 package sample.cafekiosk.spring.order.application.service;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import sample.cafekiosk.spring.IntegrationTestSupport;
 import sample.cafekiosk.spring.order.application.dto.request.OrderCreateServiceRequest;
 import sample.cafekiosk.spring.order.domain.Order;
 import sample.cafekiosk.spring.order.domain.OrderProduct;
@@ -15,15 +18,14 @@ import sample.cafekiosk.spring.stock.domain.Stock;
 import sample.cafekiosk.spring.stock.repository.StockRepository;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static sample.cafekiosk.spring.product.domain.ProductType.BOTTLE;
 import static sample.cafekiosk.spring.product.utility.ProductUtils.*;
 
-@Transactional
-@SpringBootTest
-class OrderServiceTest {
+class OrderServiceTest extends IntegrationTestSupport {
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -36,7 +38,6 @@ class OrderServiceTest {
     private static Object getProductPrice(OrderProduct orderProduct) {
         return orderProduct.getProduct().getPrice();
     }
-
 /*
     @AfterEach
     void tearDown() {   // tear down: 각 테스트케이스가 끝난 후 실행되는 정리용 코드

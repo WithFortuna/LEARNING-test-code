@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import sample.cafekiosk.spring.IntegrationTestSupport;
 import sample.cafekiosk.spring.product.domain.Product;
 import sample.cafekiosk.spring.product.domain.ProductSellingType;
 import sample.cafekiosk.spring.product.domain.ProductType;
@@ -20,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static sample.cafekiosk.spring.product.utility.ProductUtils.*;
 
 
-@DataJpaTest
-@Transactional
+//@DataJpaTest
+//@Transactional
 //@SpringBootTest
-class ProductRepositoryTest {
+class ProductRepositoryTest extends IntegrationTestSupport {
     @Autowired
     private ProductRepository productRepository;
 

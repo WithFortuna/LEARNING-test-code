@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import sample.cafekiosk.spring.ControllerTestSupport;
 import sample.cafekiosk.spring.product.application.service.ProductService;
 import sample.cafekiosk.spring.product.domain.ProductSellingType;
 import sample.cafekiosk.spring.product.domain.ProductType;
@@ -27,14 +28,8 @@ import java.util.List;
 
 import static sample.cafekiosk.spring.product.domain.ProductSellingType.SELLING;
 
-@WebMvcTest(ProductController.class)
-class ProductControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-    @MockitoBean
-    private ProductService productService;
-    @Autowired
-    private ObjectMapper objectMapper;
+//@WebMvcTest(ProductController.class)
+class ProductControllerTest extends ControllerTestSupport {
 
     @DisplayName("상품을 생성한다.")
     @Test

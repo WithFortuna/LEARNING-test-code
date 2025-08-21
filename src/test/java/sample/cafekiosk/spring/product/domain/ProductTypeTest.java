@@ -3,9 +3,17 @@ package sample.cafekiosk.spring.product.domain;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static sample.cafekiosk.spring.product.domain.ProductType.*;
 
 class ProductTypeTest {
     @DisplayName("상품타입이 재고속성을 가지고 있다면 true를 반환한다.")
