@@ -197,4 +197,37 @@ class OrderServiceTest {
                 .hasMessage("재고가 부족합니다");
     }
 
+    @DisplayName("재고 감소 시나리오")
+    @TestFactory
+    public Collection<DynamicTest> stockDecreaseScenario() {
+        // given
+        Product item1 = createProduct(BOTTLE, 1000, "001");
+        Product item2 = createProduct(BOTTLE, 3000, "002");
+        productRepository.saveAll(List.of(item1, item2));
+
+        Stock stock = Stock.create(item1, 1);
+        stockRepository.saveAll(List.of(stock));
+
+        return List.of(
+                DynamicTest.dynamicTest("재고와 동일한 개수만큼 감소가 가능하다.", () -> {
+                    // given
+                    int quantity = 1;
+
+                    // when
+                    stock.decreaseQuantity(quantity);
+
+                    // then
+                    assertThat(stock.getQuantity()).isEqualTo(0);
+                }),
+                DynamicTest.dynamicTest("재고보다 많은 개수만큼 감소시키면 예외가 발생한다.", () -> {
+                    // given
+                    int quantity = 1;
+
+                    // when
+                    assertThatThrownBy(() -> stock.decreaseQuantity(quantity))
+                            .isInstanceOf(IllegalArgumentException.class)
+                            .hasMessage("재고가 부족합니다");
+                })
+        );
+    }
 }
