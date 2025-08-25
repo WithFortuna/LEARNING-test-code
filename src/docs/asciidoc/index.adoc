@@ -1,0 +1,18 @@
+// 코드 snippet 조합하고싶은 형식 정의
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+= CafeKiosk REST API 문서
+// 설정
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+// tail of contents: 목차
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[Product-API]]
+== Product API
+
+include::you-want-name/product/product.adoc[]
