@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.8'
     id 'io.spring.dependency-management' version '1.1.7'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'sample'
@@ -17,6 +18,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
@@ -28,6 +30,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     //validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // guava
+    implementation 'com.google.guava:guava:31.1-jre'
+
+    // REST Docs
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
@@ -35,10 +45,34 @@ dependencies {
     // spring boot starter test
     // AssertJ, JUnit5 라이브러리 포함
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+ext { // 전역 변수
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+
+    sources { // 최종 결과물로 index.adoc 파일만 html로 만든다.
+        include("**/index.adoc")
+    }
+    baseDirFollowsSourceFile() // 다른 adoc 파일을 include 할 때 경로를 baseDir로 맞춘다.
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
 }
