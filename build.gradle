@@ -28,6 +28,10 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     //validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -46,6 +50,10 @@ dependencies {
     // AssertJ, JUnit5 라이브러리 포함
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // TestContainer
+    testImplementation 'org.testcontainers:junit-jupiter:1.20.1'
+    testImplementation "com.redis:testcontainers-redis:2.2.2"
 }
 
 tasks.named('test') {
